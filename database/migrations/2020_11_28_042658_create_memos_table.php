@@ -17,7 +17,7 @@ class CreateMemosTable extends Migration
             $table->bigIncrements('id');
             $table->longText('content');
             $table->integer('user_id');
-            $table->integer('status')->defalut(1);
+            $table->integer('status')->defalut('1');
             $table->timestamps();
         });
     }
