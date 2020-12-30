@@ -24,15 +24,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        // メモの一覧を取ってきてViewに渡す
-        // Memoモデル通じて、自分の作ったメモを取ってくる
-        // ユーザーIDを取得
-        $user = \Auth::user();
-        //dd($user);
-        // メモの所有者が自分かつ、アクティブなものだけを取得
-        $memos = Memo::select('memos.*')->where('user_id', $user['id'])->where('status', 1)->get();
-        // dd($memos);
-        return view('home', compact('memos'));
+        return view('home');
     }
     
     public function top()
@@ -45,13 +37,8 @@ class HomeController extends Controller
     public function create()
     {
         // 表示ページに必要なデータを集める
-        // なんらかのデータ加工を行う
-        // 集めたデータをViewに渡す
-        // ユーザーIDを取得
-        $user = \Auth::user();
-        // dd($user);
-        // return view('create');
-        return view('create',compact('user'));
+
+        return view('create');
     }
     
     public function store(Request $request)
@@ -63,5 +50,30 @@ class HomeController extends Controller
         Memo::insert(['content' => $data['content'], 'user_id' => $data['user_id'], 'status' => 1 ]);
         // リダイレクト処理
         return redirect()->route('home');
+    }
+    
+    public function edit($id){
+        // 該当するIDのメモをデータベースから取得
+        $user = \Auth::user();
+        $memo = Memo::select('memos.*')->where('id', $id)->where('user_id', $user['id'])->where('status', 1)->first();
+        //取得したメモをViewに渡す
+        return view('edit',compact('memo'));
+    }
+    
+    public function update(Request $request)
+    {
+        $data = $request->all();
+        // MEMOモデルにDBへ保存する命令を出す
+        // updateメソッドには配列を渡す update( ここに配列を渡す )
+        Memo::where('id', $data['id'])->update( [ 'content' => $data['content'] ]);
+        // リダイレクト処理
+        return redirect()->route('home')->with('success', '更新が完了しました');
+    }
+    
+     public function delete($id)
+    {
+        Memo::where('id', $id)->update(['status' => 2]);
+        // リダイレクト処理
+        return redirect()->route('home')->with('success', '削除が完了しました');
     }
 }

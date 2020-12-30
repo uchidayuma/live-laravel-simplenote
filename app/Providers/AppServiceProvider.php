@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Memo;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,5 +25,13 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
             \URL::forceScheme('https');
+            view()->composer('*', function ($view) {
+                // get the current user
+                 // インスタンス化
+                $memoModel = new Memo();
+                $memos = $memoModel->myMemo( \Auth::id() );
+                
+                $view->with('memos', $memos);
+            });
     }
 }

@@ -11,13 +11,16 @@
 
     <!-- Scripts -->
     <script src="{{ '/js/app.js' }}" defer></script>
+    @yield('js')
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
     <!-- Styles -->
     <link href="{{ '/css/app.css' }}" rel="stylesheet">
+    @yield('css')
 </head>
 <body>
     <div id="app">
@@ -72,9 +75,33 @@
             </div>
         </nav>
 
-        <main class="py-4">
-            @yield('content')
+        <main class="">
+        @if(session('success'))
+            <div class="alert alert-success" role="alert">
+              {{ session('success') }}
+            </div>
+        @endif
+          <div class="row" style='height: 92vh;'>
+            <div class="col-md-2 p-0">
+              <div class="card h-100">
+            　  <div class="card-header">左サイトバー</div>
+            　　  <div class="card-body"></div>
+            </div>
+        　　</div>
+            <div class="col-md-4 p-0">
+              <div class="card h-100">
+                <div class="card-header">ここにメモ一覧が並ぶ</div>
+        @foreach($memos as $memo)
+                  <a href="/edit/{{ $memo['id'] }}">{{ $memo['content'] }}</a>
+        @endforeach
+              </div>
+            </div> <!-- col-md-3 -->
+            <div class="col-md-6 p-0">
+              @yield('content')
+            </div>
+          </div> <!-- row justify-content-center -->
         </main>
     </div>
+    @yield('footer')
 </body>
 </html>
