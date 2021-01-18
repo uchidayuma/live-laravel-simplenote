@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use App\Memo;
+use App\Tag;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -31,7 +32,11 @@ class AppServiceProvider extends ServiceProvider
                 $memoModel = new Memo();
                 $memos = $memoModel->myMemo( \Auth::id() );
                 
-                $view->with('memos', $memos);
+                // タグに取得
+                 $tagModel = new Tag();
+                 $tags = $tagModel->where('user_id', \Auth::id())->get();
+                
+                $view->with('memos', $memos)->with('tags', $tags);
             });
     }
 }

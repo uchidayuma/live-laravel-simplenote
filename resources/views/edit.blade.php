@@ -29,6 +29,13 @@
       @csrf
       <textarea class='edit-area' name='content'>{{ $memo['content'] }}</textarea>
       <input type='hidden' name='id' value="{{ $memo['id'] }}">
+      <div class="form-group">
+        <select class='form-control' name='tag_id'>
+      @foreach($tags as $tag)
+          <option value="{{ $tag['id'] }}" {{ $tag['id'] == $memo['tag_id'] ? "selected" : "" }}>{{$tag['name']}}</option>
+      @endforeach
+        </select>
+      </div>
       <button class='btn btn-outline-primary btn-lg btn-block'>更新</button>
     </form>
   </div>
