@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-            \URL::forceScheme('https');
+//            \URL::forceScheme('https');
             view()->composer('*', function ($view) {
                 // get the current user
                  // インスタンス化
